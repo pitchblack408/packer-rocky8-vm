@@ -1,0 +1,37 @@
+{
+    "builders": [
+      {
+        "type": "vmware-iso",
+        "iso_url": "https://download.rockylinux.org/pub/rocky/8/isos/x86_64/Rocky-8.7-x86_64-dvd1.iso",
+        "iso_checksum": "sha256:checksum_value_of_the_iso", 
+        "iso_checksum_type": "sha256",
+        "vm_name": "Rocky8_VM",
+        "guest_os_type": "rhel8_64",
+        "output_directory": "output-vmware",
+        "disk_size": 10240,
+        "boot_wait": "10s",
+        "boot_command": [
+          "<esc><wait>",
+          "linux ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/rocky8.ks<enter>"
+        ],
+        "ssh_username": "root",
+        "ssh_password": "rootpassword",
+        "ssh_wait_timeout": "30m",
+        "shutdown_command": "shutdown now",
+        "vmx_data": {
+          "memsize": "4096",
+          "numvcpus": "2",
+          "scsi0.virtualDev": "pvscsi"
+        },
+        "http_directory": "./http"
+      }
+    ],
+  
+    "provisioners": [
+      {
+        "type": "shell",
+        "script": "scripts/setup.sh"
+      }
+    ]
+  }
+  
